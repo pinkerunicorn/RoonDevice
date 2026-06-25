@@ -128,7 +128,7 @@ class RoonZone extends IPSModuleStrict
                     // Konvertiere % (0 bis 100) in dB (-60 bis 0)
                     $percent = max(0, min(100, (int) $Value));
                     $db = (int) round(($percent * 60 / 100) - 60);
-                    $this->SendMQTTVolumeCommand($outputName, 'set', $db);
+                    $this->SendMQTTVolumeCommand($outputName, 'set', (string)$db);
                 }
                 break;
         }
