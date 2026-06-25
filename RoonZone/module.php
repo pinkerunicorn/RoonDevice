@@ -178,8 +178,7 @@ class RoonZone extends IPSModule
 
     private function GetMqttZoneName(string $zoneName): string
     {
-        // roon-extension-mqtt ersetzt bestimmte Sonderzeichen mit Bindestrichen
-        $search = [' ', '+', '/', '#'];
-        return str_replace($search, '-', $zoneName);
+        // Den exakten Zonen-Namen zurueckgeben, da roon-extension-mqtt scheinbar doch Leerzeichen zulaesst
+        return $zoneName;
     }
 }
