@@ -76,16 +76,16 @@ class RoonZone extends IPSModule
         elseif ($topic === 'roon/' . $topicZone . '/state') {
             switch (strtolower($payload)) {
                 case 'stopped':
-                    $this->SetValue('State', 0);
+                    $this->SetValue('State', 1); // 1 = Stop
                     break;
                 case 'playing':
-                    $this->SetValue('State', 1);
+                    $this->SetValue('State', 2); // 2 = Play
                     break;
                 case 'paused':
-                    $this->SetValue('State', 2);
+                    $this->SetValue('State', 3); // 3 = Pause
                     break;
                 case 'loading':
-                    $this->SetValue('State', 3);
+                    $this->SetValue('State', 1); // Fallback zu Stop
                     break;
             }
         }
@@ -108,13 +108,13 @@ class RoonZone extends IPSModule
         switch ($Ident) {
             case 'State':
                 if ($Value == 0) {
-                    $this->SendCommand('stop');
-                } elseif ($Value == 1) {
-                    $this->SendCommand('play');
-                } elseif ($Value == 2) {
-                    $this->SendCommand('pause');
-                } elseif ($Value == 3) {
                     $this->SendCommand('previous');
+                } elseif ($Value == 1) {
+                    $this->SendCommand('stop');
+                } elseif ($Value == 2) {
+                    $this->SendCommand('play');
+                } elseif ($Value == 3) {
+                    $this->SendCommand('pause');
                 } elseif ($Value == 4) {
                     $this->SendCommand('next');
                 }
