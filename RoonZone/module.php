@@ -105,9 +105,12 @@ class RoonZone extends IPSModule
                     break;
             }
         }
-        // Lautstärke
-        elseif ($topic === 'roon/' . $topicZone . '/volume/value') {
-            $this->SetValue('Volume', intval($payload));
+        // Lautstärke: roon/zonename/outputs/outputname/volume/value
+        if (preg_match('/^roon\/' . preg_quote($topicZone, '/') . '\/outputs\/(.+)\/volume\/value$/', $topic, $matches)) {
+            $outputName = $matches[1];
+            // Speichere den Output-Namen für spätere Kommandos
+            $this->SetBuffer('OutputName', $outputName);
+            $this->SetValue('Volume', (int) $payload);
         }
     }
 
@@ -125,9 +128,28 @@ class RoonZone extends IPSModule
                 break;
 
             case 'Volume':
-                $this->SetVolume($Value);
+                $outputName = $this->GetBuffer('OutputName');
+                if ($outputName !== '') {
+                    $this->SendMQTTVolumeCommand($outputName, 'set', $Value);
+                }
                 break;
         }
+    }
+
+    private function SendMQTTCommand(string $command, $payload = '')
+    {
+        $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
+        $topic = 'roon/' . $topicZone . '/command';
+
+        $this->PublishMqtt($topic, $command); // Usually command is the payload itself for simple actions
+    }
+
+    private function SendMQTTVolumeCommand(string $outputName, string $command, $payload)
+    {
+        $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
+        $topic = 'roon/' . $topicZone . '/outputs/' . $outputName . '/volume/' . $command;
+
+        $this->PublishMqtt($topic, (string)$payload);
     }
 
     public function SendCommand(string $command)
