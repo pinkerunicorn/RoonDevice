@@ -57,7 +57,7 @@ class RoonZone extends IPSModuleStrict
         $payloadRaw = is_scalar($data['Payload']) ? (string) $data['Payload'] : '';
         $payload = (ctype_xdigit($payloadRaw) || empty($payloadRaw)) ? hex2bin($payloadRaw) : $payloadRaw;
 
-        IPS_LogMessage('RoonZone', 'Received Topic: ' . $topic . ' | Payload: ' . $payload);
+        // IPS_LogMessage('RoonZone', 'Received Topic: ' . $topic . ' | Payload: ' . $payload);
 
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
 
