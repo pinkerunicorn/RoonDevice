@@ -53,8 +53,8 @@ class RoonZone extends IPSModuleStrict
             return "";
         }
 
-        $topic = $data['Topic'];
-        $payload = $data['Payload'];
+        $topic = (string) $data['Topic'];
+        $payload = is_scalar($data['Payload']) ? (string) $data['Payload'] : json_encode($data['Payload']);
 
         IPS_LogMessage('RoonZone', 'Received Topic: ' . $topic . ' | Payload: ' . $payload);
 
