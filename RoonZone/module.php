@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-class RoonZone extends IPSModule
+class RoonZone extends IPSModuleStrict
 {
-    public function Create()
+    public function Create(): void
     {
         // Diese Zeile nicht löschen.
         parent::Create();
@@ -26,7 +26,7 @@ class RoonZone extends IPSModule
         $this->EnableAction('Volume');
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
@@ -46,11 +46,11 @@ class RoonZone extends IPSModule
         $this->SetReceiveDataFilter('.*' . $topicZone . '.*');
     }
 
-    public function ReceiveData($JSONString)
+    public function ReceiveData(string $JSONString): string
     {
         $data = json_decode($JSONString, true);
         if (!isset($data['Topic']) || !isset($data['Payload'])) {
-            return;
+            return "";
         }
 
         $topic = $data['Topic'];
@@ -101,9 +101,10 @@ class RoonZone extends IPSModule
             $percent = (int) round(($db + 60) * 100 / 60);
             $this->SetValue('Volume', $percent);
         }
+        return "";
     }
 
-    public function RequestAction($Ident, $Value)
+    public function RequestAction(string $Ident, $Value): void
     {
         switch ($Ident) {
             case 'State':
@@ -132,7 +133,7 @@ class RoonZone extends IPSModule
         }
     }
 
-    private function SendMQTTCommand(string $command, $payload = '')
+    private function SendMQTTCommand(string $command, string $payload = ''): void
     {
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
         $topic = 'roon/' . $topicZone . '/command';
@@ -140,7 +141,7 @@ class RoonZone extends IPSModule
         $this->PublishMqtt($topic, $command); // Usually command is the payload itself for simple actions
     }
 
-    private function SendMQTTVolumeCommand(string $outputName, string $command, $payload)
+    private function SendMQTTVolumeCommand(string $outputName, string $command, string $payload): void
     {
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
         $topic = 'roon/' . $topicZone . '/outputs/' . $outputName . '/volume/' . $command;
@@ -148,36 +149,36 @@ class RoonZone extends IPSModule
         $this->PublishMqtt($topic, (string)$payload);
     }
 
-    public function SendCommand(string $command)
+    public function SendCommand(string $command): void
     {
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
         $topic = 'roon/' . $topicZone . '/command';
         $this->PublishMqtt($topic, $command);
     }
 
-    public function SetVolume(int $volume)
+    public function SetVolume(int $volume): void
     {
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
         $topic = 'roon/' . $topicZone . '/volume/set';
         $this->PublishMqtt($topic, (string)$volume);
     }
 
-    public function TogglePlayPause()
+    public function TogglePlayPause(): void
     {
         $this->SendCommand('playpause');
     }
 
-    public function NextTrack()
+    public function NextTrack(): void
     {
         $this->SendCommand('next');
     }
 
-    public function PreviousTrack()
+    public function PreviousTrack(): void
     {
         $this->SendCommand('previous');
     }
 
-    private function PublishMqtt(string $topic, string $payload)
+    private function PublishMqtt(string $topic, string $payload): void
     {
         if (!$this->HasActiveParent()) {
             IPS_LogMessage('RoonZone', 'No active MQTT parent');
