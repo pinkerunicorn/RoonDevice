@@ -15,7 +15,7 @@ class RoonZone extends IPSModule
         // (Wird automatisch durch parentRequirements in module.json uebernommen)
 
         // Variablen registrieren
-        $this->RegisterVariableInteger('State', 'Status', '~Playback', 1);
+        $this->RegisterVariableInteger('State', 'Status', '~PlaybackPreviousNext', 1);
         $this->RegisterVariableString('Title', 'Titel', '~Song', 2);
         $this->RegisterVariableString('Artist', 'Künstler', '~Artist', 3);
         $this->RegisterVariableString('Album', 'Album', '', 4);
