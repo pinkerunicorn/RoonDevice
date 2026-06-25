@@ -15,11 +15,11 @@ class RoonZone extends IPSModule
         // (Wird automatisch durch parentRequirements in module.json uebernommen)
 
         // Variablen registrieren
-        $this->RegisterVariableInteger('State', 'Status', 'ROON.State', 1);
-        $this->RegisterVariableString('Title', 'Titel', '', 2);
-        $this->RegisterVariableString('Artist', 'Künstler', '', 3);
+        $this->RegisterVariableInteger('State', 'Status', '~Playback', 1);
+        $this->RegisterVariableString('Title', 'Titel', '~Song', 2);
+        $this->RegisterVariableString('Artist', 'Künstler', '~Artist', 3);
         $this->RegisterVariableString('Album', 'Album', '', 4);
-        $this->RegisterVariableInteger('Volume', 'Lautstärke', 'ROON.Volume', 5);
+        $this->RegisterVariableInteger('Volume', 'Lautstärke', '~Volume', 5);
 
         // Aktionen für die Bedienung freigeben
         $this->EnableAction('State');
@@ -94,7 +94,12 @@ class RoonZone extends IPSModule
             $outputName = $matches[1];
             // Speichere den Output-Namen für spätere Kommandos
             $this->SetBuffer('OutputName', $outputName);
-            $this->SetValue('Volume', (int) $payload);
+            
+            // Konvertiere dB (-60 bis 0) in % (0 bis 100) für das ~Volume Profil
+            $db = (int) $payload;
+            $db = max(-60, min(0, $db));
+            $percent = (int) round(($db + 60) * 100 / 60);
+            $this->SetValue('Volume', $percent);
         }
     }
 
@@ -108,13 +113,20 @@ class RoonZone extends IPSModule
                     $this->SendCommand('play');
                 } elseif ($Value == 2) {
                     $this->SendCommand('pause');
+                } elseif ($Value == 3) {
+                    $this->SendCommand('previous');
+                } elseif ($Value == 4) {
+                    $this->SendCommand('next');
                 }
                 break;
 
             case 'Volume':
                 $outputName = $this->GetBuffer('OutputName');
                 if ($outputName !== '') {
-                    $this->SendMQTTVolumeCommand($outputName, 'set', $Value);
+                    // Konvertiere % (0 bis 100) in dB (-60 bis 0)
+                    $percent = max(0, min(100, (int) $Value));
+                    $db = (int) round(($percent * 60 / 100) - 60);
+                    $this->SendMQTTVolumeCommand($outputName, 'set', $db);
                 }
                 break;
         }
