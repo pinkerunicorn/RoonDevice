@@ -58,8 +58,8 @@ class RoonZone extends IPSModule
         // Formatiere Zone Name für MQTT Topic (Leerzeichen zu Bindestrich etc.)
         $topicZone = $this->GetMqttZoneName($zone);
 
-        // Filter setzen: Wir wollen alle roon/zonename/# Topics empfangen
-        $this->SetReceiveDataFilter('.*roon/' . $topicZone . '.*');
+        // Filter setzen: Da json_encode oft Slashes als \/ escaped, nehmen wir einen toleranteren Filter
+        $this->SetReceiveDataFilter('.*' . $topicZone . '.*');
     }
 
     public function ReceiveData($JSONString)
@@ -71,6 +71,8 @@ class RoonZone extends IPSModule
 
         $topic = $data['Topic'];
         $payload = $data['Payload'];
+
+        IPS_LogMessage('RoonZone', 'Received Topic: ' . $topic . ' | Payload: ' . $payload);
 
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
 
