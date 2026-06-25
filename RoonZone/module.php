@@ -14,22 +14,6 @@ class RoonZone extends IPSModule
         // Verbinde mit dem MQTT Client/Server (Parent)
         // (Wird automatisch durch parentRequirements in module.json uebernommen)
 
-        // Profile anlegen
-        if (!IPS_VariableProfileExists('ROON.State')) {
-            IPS_CreateVariableProfile('ROON.State', 1);
-            IPS_SetVariableProfileAssociation('ROON.State', 0, 'Stopped', 'MediaStop', 0xFF0000);
-            IPS_SetVariableProfileAssociation('ROON.State', 1, 'Playing', 'MediaPlay', 0x00FF00);
-            IPS_SetVariableProfileAssociation('ROON.State', 2, 'Paused', 'MediaPause', 0xFFFF00);
-            IPS_SetVariableProfileAssociation('ROON.State', 3, 'Loading', 'Refresh', 0x0000FF);
-        }
-
-        if (!IPS_VariableProfileExists('ROON.Volume')) {
-            IPS_CreateVariableProfile('ROON.Volume', 1);
-            IPS_SetVariableProfileValues('ROON.Volume', 0, 100, 1);
-            IPS_SetVariableProfileText('ROON.Volume', '', ' %');
-            IPS_SetVariableProfileIcon('ROON.Volume', 'Intensity');
-        }
-
         // Variablen registrieren
         $this->RegisterVariableInteger('State', 'Status', 'ROON.State', 1);
         $this->RegisterVariableString('Title', 'Titel', '', 2);

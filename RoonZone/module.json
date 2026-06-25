@@ -11,5 +11,26 @@
     "implemented": [
         "{7F7632D9-FA40-4F38-8DEA-C83CD4325A32}"
     ],
-    "prefix": "ROON"
+    "prefix": "ROON",
+    "profiles": [
+        {
+            "name": "ROON.State",
+            "type": 1,
+            "associations": [
+                { "value": 0, "name": "Stopped", "icon": "MediaStop", "color": 16711680 },
+                { "value": 1, "name": "Playing", "icon": "MediaPlay", "color": 65280 },
+                { "value": 2, "name": "Paused", "icon": "MediaPause", "color": 16776960 },
+                { "value": 3, "name": "Loading", "icon": "Refresh", "color": 255 }
+            ]
+        },
+        {
+            "name": "ROON.Volume",
+            "type": 1,
+            "icon": "Intensity",
+            "suffix": " dB",
+            "minValue": -60,
+            "maxValue": 0,
+            "stepSize": 1
+        }
+    ]
 }
