@@ -1,0 +1,15 @@
+{
+    "id": "{72F8B1A0-3C1A-481A-BAE4-2DB6D38B9C81}",
+    "name": "RoonZone",
+    "type": 3,
+    "vendor": "Roon",
+    "aliases": [],
+    "parentRequirements": [
+        "{101EA4D7-E6FC-74B6-6B22-2BC0C4960309}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{018EF6B5-AB94-40C6-AA53-46943E824ACF}"
+    ],
+    "prefix": "ROON"
+}
