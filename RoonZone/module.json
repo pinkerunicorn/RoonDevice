@@ -3,6 +3,7 @@
     "name": "RoonZone",
     "type": 3,
     "vendor": "Roon",
+    "url": "https://github.com/pinkerunicorn/RoonDevice",
     "aliases": [],
     "parentRequirements": [
         "{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}"
