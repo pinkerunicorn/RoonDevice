@@ -12,7 +12,7 @@ class RoonZone extends IPSModule
         $this->RegisterPropertyString('ZoneName', '');
 
         // Verbinde mit dem MQTT Client/Server (Parent)
-        $this->RequireParent('{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}');
+        // (Wird automatisch durch parentRequirements in module.json uebernommen)
 
         // Profile anlegen
         if (!IPS_VariableProfileExists('ROON.State')) {
