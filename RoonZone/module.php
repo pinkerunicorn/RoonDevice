@@ -54,7 +54,8 @@ class RoonZone extends IPSModuleStrict
         }
 
         $topic = (string) $data['Topic'];
-        $payload = is_scalar($data['Payload']) ? (string) $data['Payload'] : json_encode($data['Payload']);
+        $payloadRaw = is_scalar($data['Payload']) ? (string) $data['Payload'] : '';
+        $payload = (ctype_xdigit($payloadRaw) || empty($payloadRaw)) ? hex2bin($payloadRaw) : $payloadRaw;
 
         IPS_LogMessage('RoonZone', 'Received Topic: ' . $topic . ' | Payload: ' . $payload);
 
@@ -191,7 +192,7 @@ class RoonZone extends IPSModuleStrict
             'QualityOfService' => 0,
             'Retain'  => false,
             'Topic'   => $topic,
-            'Payload' => $payload
+            'Payload' => bin2hex($payload)
         ];
 
         $this->SendDataToParent(json_encode($data));
