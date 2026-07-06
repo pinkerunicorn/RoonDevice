@@ -57,7 +57,7 @@ class RoonZone extends IPSModuleStrict
         $payloadRaw = is_scalar($data['Payload']) ? (string) $data['Payload'] : '';
         $payload = (ctype_xdigit($payloadRaw) || empty($payloadRaw)) ? hex2bin($payloadRaw) : $payloadRaw;
 
-        // IPS_LogMessage('RoonZone', 'Received Topic: ' . $topic . ' | Payload: ' . $payload);
+        // IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: ' . 'Received Topic: ' . $topic . ' | Payload: ' . $payload);
 
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
 
@@ -182,7 +182,7 @@ class RoonZone extends IPSModuleStrict
     private function PublishMqtt(string $topic, string $payload): void
     {
         if (!$this->HasActiveParent()) {
-            IPS_LogMessage('RoonZone', 'No active MQTT parent');
+            IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: ' . 'No active MQTT parent');
             return;
         }
 
