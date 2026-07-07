@@ -15,11 +15,11 @@ class RoonZone extends IPSModuleStrict
         // (Wird automatisch durch parentRequirements in module.json uebernommen)
 
         // Variablen registrieren
-        $this->RegisterVariableInteger('State', 'ℹ️ Status', '~PlaybackPreviousNext', 1);
-        $this->RegisterVariableString('Title', '🎵 Titel', '~Song', 2);
-        $this->RegisterVariableString('Artist', '🎤 Künstler', '~Artist', 3);
+        $this->RegisterVariableInteger('State', 'ℹ️ Status', '', 1);
+        $this->RegisterVariableString('Title', '🎵 Titel', '', 2);
+        $this->RegisterVariableString('Artist', '🎤 Künstler', '', 3);
         $this->RegisterVariableString('Album', '💿 Album', '', 4);
-        $this->RegisterVariableInteger('Volume', '🔊 Lautstärke', '~Volume', 5);
+        $this->RegisterVariableInteger('Volume', '🔊 Lautstärke', '', 5);
 
         // Aktionen für die Bedienung freigeben
         $this->EnableAction('State');
@@ -44,6 +44,25 @@ class RoonZone extends IPSModuleStrict
 
         // Filter setzen: Da json_encode oft Slashes als \/ escaped, nehmen wir einen toleranteren Filter
         $this->SetReceiveDataFilter('.*' . $topicZone . '.*');
+
+        if (function_exists('IPS_SetVariableCustomPresentation')) {
+            IPS_SetVariableCustomPresentation($this->GetIDForIdent('State'), [
+                'ASSOCIATIONS' => [
+                    ['VALUE' => 0, 'NAME' => 'Previous', 'ICON' => '', 'COLOR' => -1],
+                    ['VALUE' => 1, 'NAME' => 'Stop', 'ICON' => '', 'COLOR' => -1],
+                    ['VALUE' => 2, 'NAME' => 'Play', 'ICON' => '', 'COLOR' => -1],
+                    ['VALUE' => 3, 'NAME' => 'Pause', 'ICON' => '', 'COLOR' => -1],
+                    ['VALUE' => 4, 'NAME' => 'Next', 'ICON' => '', 'COLOR' => -1]
+                ]
+            ]);
+            IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), [
+                'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
+                'MIN' => 0,
+                'MAX' => 100,
+                'STEP' => 1,
+                'SUFFIX' => ' %'
+            ]);
+        }
     }
 
     public function ReceiveData(string $JSONString): string
