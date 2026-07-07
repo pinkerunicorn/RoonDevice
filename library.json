@@ -1,12 +1,12 @@
-{
-    "id": "{5B6C4F3E-7D4F-418E-A968-3E87CA616453}",
-    "author": "PinkerUnicorn",
-    "name": "RoonDevice",
-    "url": "https://github.com/pinkerunicorn/RoonDevice",
-    "compatibility": {
-        "version": "7.0"
-    },
-    "version": "1.0",
-    "build": 0,
-    "date": 0
+﻿{
+    "id":  "{5B6C4F3E-7D4F-418E-A968-3E87CA616453}",
+    "author":  "Florian Graßinger",
+    "name":  "RoonDevice",
+    "url":  "https://github.com/pinkerunicorn/RoonDevice",
+    "compatibility":  {
+                          "version":  "7.0"
+                      },
+    "version":  "1.0",
+    "build":  0,
+    "date":  0
 }
