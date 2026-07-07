@@ -15,7 +15,7 @@ class RoonZone extends IPSModuleStrict
         // (Wird automatisch durch parentRequirements in module.json uebernommen)
 
         // Variablen registrieren
-        $this->RegisterVariableInteger('State', 'ℹ️ Status', '', 1);
+        $this->RegisterVariableInteger('State', 'ℹ️ Status', 'Roon.State', 1);
         $this->RegisterVariableString('Title', '🎵 Titel', '', 2);
         $this->RegisterVariableString('Artist', '🎤 Künstler', '', 3);
         $this->RegisterVariableString('Album', '💿 Album', '', 4);
@@ -45,15 +45,18 @@ class RoonZone extends IPSModuleStrict
         // Filter setzen: Da json_encode oft Slashes als \/ escaped, nehmen wir einen toleranteren Filter
         $this->SetReceiveDataFilter('.*' . $topicZone . '.*');
 
+        if (!IPS_VariableProfileExists('Roon.State')) {
+            IPS_CreateVariableProfile('Roon.State', 1); // Integer
+            IPS_SetVariableProfileAssociation('Roon.State', 0, 'Previous', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 1, 'Stop', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 2, 'Play', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 3, 'Pause', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 4, 'Next', '', -1);
+        }
+
         if (function_exists('IPS_SetVariableCustomPresentation')) {
             IPS_SetVariableCustomPresentation($this->GetIDForIdent('State'), [
-                'ASSOCIATIONS' => [
-                    ['VALUE' => 0, 'NAME' => 'Previous', 'ICON' => '', 'COLOR' => -1],
-                    ['VALUE' => 1, 'NAME' => 'Stop', 'ICON' => '', 'COLOR' => -1],
-                    ['VALUE' => 2, 'NAME' => 'Play', 'ICON' => '', 'COLOR' => -1],
-                    ['VALUE' => 3, 'NAME' => 'Pause', 'ICON' => '', 'COLOR' => -1],
-                    ['VALUE' => 4, 'NAME' => 'Next', 'ICON' => '', 'COLOR' => -1]
-                ]
+                'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION
             ]);
             IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), [
                 'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
