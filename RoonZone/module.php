@@ -15,6 +15,15 @@ class RoonZone extends IPSModuleStrict
         // (Wird automatisch durch parentRequirements in module.json uebernommen)
 
         // Variablen registrieren
+
+        if (!IPS_VariableProfileExists('Roon.State')) {
+            IPS_CreateVariableProfile('Roon.State', 1); // Integer
+            IPS_SetVariableProfileAssociation('Roon.State', 0, 'Previous', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 1, 'Stop', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 2, 'Play', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 3, 'Pause', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 4, 'Next', '', -1);
+        }
         $this->RegisterVariableInteger('State', 'ℹ️ Status', 'Roon.State', 1);
         $this->RegisterVariableString('Title', '🎵 Titel', '', 2);
         $this->RegisterVariableString('Artist', '🎤 Künstler', '', 3);
@@ -44,15 +53,6 @@ class RoonZone extends IPSModuleStrict
 
         // Filter setzen: Da json_encode oft Slashes als \/ escaped, nehmen wir einen toleranteren Filter
         $this->SetReceiveDataFilter('.*' . $topicZone . '.*');
-
-        if (!IPS_VariableProfileExists('Roon.State')) {
-            IPS_CreateVariableProfile('Roon.State', 1); // Integer
-            IPS_SetVariableProfileAssociation('Roon.State', 0, 'Previous', '', -1);
-            IPS_SetVariableProfileAssociation('Roon.State', 1, 'Stop', '', -1);
-            IPS_SetVariableProfileAssociation('Roon.State', 2, 'Play', '', -1);
-            IPS_SetVariableProfileAssociation('Roon.State', 3, 'Pause', '', -1);
-            IPS_SetVariableProfileAssociation('Roon.State', 4, 'Next', '', -1);
-        }
 
         if (function_exists('IPS_SetVariableCustomPresentation')) {
             IPS_SetVariableCustomPresentation($this->GetIDForIdent('State'), [
