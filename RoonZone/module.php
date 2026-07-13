@@ -225,9 +225,10 @@ class RoonZone extends IPSModuleStrict
         return $zoneName;
     }
 
-    protected function LogMessage($Message, $Type)
+    protected function LogMessage(string $Message, int $Type): bool
     {
         IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: ' . $Message);
+        return true;
     }
 }
 
