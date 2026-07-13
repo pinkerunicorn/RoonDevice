@@ -54,18 +54,17 @@ class RoonZone extends IPSModuleStrict
         // Filter setzen: Da json_encode oft Slashes als \/ escaped, nehmen wir einen toleranteren Filter
         $this->SetReceiveDataFilter('.*' . $topicZone . '.*');
 
-        if (function_exists('IPS_SetVariableCustomPresentation')) {
-            IPS_SetVariableCustomPresentation($this->GetIDForIdent('State'), [
-                'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION
-            ]);
-            IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), [
-                'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
-                'MIN' => 0,
-                'MAX' => 100,
-                'STEP' => 1,
-                'SUFFIX' => ' %'
-            ]);
-        }
+        
+        IPS_SetVariableCustomPresentation($this->GetIDForIdent('State'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION
+        ]);
+        IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
+            'MIN' => 0,
+            'MAX' => 100,
+            'STEP' => 1,
+            'SUFFIX' => ' %'
+        ]);
     }
 
     public function ReceiveData(string $JSONString): string
