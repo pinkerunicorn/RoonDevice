@@ -3,7 +3,7 @@
     "name": "RoonZone",
     "type": 3,
     "vendor": "Roon",
-    "url": "https://github.com/pinkerunicorn/RoonDevice",
+    "url": "https://github.com/pinkerunicorn/",
     "aliases": [],
     "parentRequirements": [
         "{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}"
@@ -12,5 +12,6 @@
     "implemented": [
         "{7F7632D9-FA40-4F38-8DEA-C83CD4325A32}"
     ],
-    "prefix": "ROON"
+    "prefix": "ROON",
+    "author": "Florian Graßinger"
 }
