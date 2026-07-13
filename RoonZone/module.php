@@ -224,4 +224,10 @@ class RoonZone extends IPSModuleStrict
         // Den exakten Zonen-Namen zurueckgeben, da roon-extension-mqtt scheinbar doch Leerzeichen zulaesst
         return $zoneName;
     }
+
+    protected function LogMessage($Message, $KL_MESSAGE = KL_MESSAGE)
+    {
+        IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: ' . $Message);
+    }
 }
+
