@@ -236,9 +236,14 @@ class RoonZone extends IPSModuleStrict
 {
     "elements": [
         {
-            "type": "ValidationTextBox",
-            "name": "ZoneName",
-            "caption": "Roon Zone Name (exakte Schreibweise aus Roon)"
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "ValidationTextBox",
+                    "name": "ZoneName",
+                    "caption": "Roon Zone Name (exakte Schreibweise aus Roon)"
+                }
+            ]
         }
     ],
     "actions": [
