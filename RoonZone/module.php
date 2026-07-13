@@ -49,21 +49,21 @@ class RoonZone extends IPSModuleStrict
 
         
                 IPS_SetVariableCustomPresentation($this->GetIDForIdent('State'), [
-            'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
-            'ASSOCIATIONS' => [
-                ['VALUE' => 0, 'NAME' => 'Previous', 'ICON' => '', 'COLOR' => -1],
-                ['VALUE' => 1, 'NAME' => 'Stop', 'ICON' => '', 'COLOR' => -1],
-                ['VALUE' => 2, 'NAME' => 'Play', 'ICON' => '', 'COLOR' => -1],
-                ['VALUE' => 3, 'NAME' => 'Pause', 'ICON' => '', 'COLOR' => -1],
-                ['VALUE' => 4, 'NAME' => 'Next', 'ICON' => '', 'COLOR' => -1]
+            'Presentation' => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
+            'Associations' => [
+                ['Value' => 0, 'Name' => 'Previous', 'Icon' => '', 'Color' => -1],
+                ['Value' => 1, 'Name' => 'Stop', 'Icon' => '', 'Color' => -1],
+                ['Value' => 2, 'Name' => 'Play', 'Icon' => '', 'Color' => -1],
+                ['Value' => 3, 'Name' => 'Pause', 'Icon' => '', 'Color' => -1],
+                ['Value' => 4, 'Name' => 'Next', 'Icon' => '', 'Color' => -1]
             ]
         ]);
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), [
-            'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
-            'MIN' => 0,
-            'MAX' => 100,
-            'STEP' => 1,
-            'SUFFIX' => ' %'
+            'Presentation' => VARIABLE_PRESENTATION_SLIDER,
+            'Min' => 0,
+            'Max' => 100,
+            'Step' => 1,
+            'Suffix' => ' %'
         ]);
     }
 
