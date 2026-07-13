@@ -58,11 +58,11 @@ class RoonZone extends IPSModuleStrict
         }
         IPS_SetVariableCustomProfile($this->GetIDForIdent('State'), 'Roon.State');
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), [
-            'Presentation' => VARIABLE_PRESENTATION_SLIDER,
-            'Min' => 0,
-            'Max' => 100,
-            'Step' => 1,
-            'Suffix' => ' %'
+            'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
+            'MIN' => 0,
+            'MAX' => 100,
+            'STEP' => 1,
+            'SUFFIX' => ' %'
         ]);
     }
 
