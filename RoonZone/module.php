@@ -48,7 +48,7 @@ class RoonZone extends IPSModuleStrict
         $this->SetReceiveDataFilter('.*' . $topicZone . '.*');
 
         
-                IPS_SetVariableCustomPresentation($this->GetIDForIdent('State'), [
+                IPS_SetVariableCustomPresentation($this->GetIDForIdent('State'), json_encode([
             'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
             'ASSOCIATIONS' => [
                 ['VALUE' => 0, 'NAME' => 'Previous', 'ICON' => '', 'COLOR' => -1],
@@ -57,14 +57,14 @@ class RoonZone extends IPSModuleStrict
                 ['VALUE' => 3, 'NAME' => 'Pause', 'ICON' => '', 'COLOR' => -1],
                 ['VALUE' => 4, 'NAME' => 'Next', 'ICON' => '', 'COLOR' => -1]
             ]
-        ]);
-        IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), [
+        ]));
+        IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), json_encode([
             'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
             'MIN' => 0,
             'MAX' => 100,
             'STEP' => 1,
             'SUFFIX' => ' %'
-        ]);
+        ]));
     }
 
     public function ReceiveData(string $JSONString): string
