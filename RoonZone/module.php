@@ -48,16 +48,15 @@ class RoonZone extends IPSModuleStrict
         $this->SetReceiveDataFilter('.*' . $topicZone . '.*');
 
         
-                IPS_SetVariableCustomPresentation($this->GetIDForIdent('State'), [
-            'Presentation' => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
-            'Associations' => [
-                ['Value' => 0, 'Name' => 'Previous', 'Icon' => '', 'Color' => -1],
-                ['Value' => 1, 'Name' => 'Stop', 'Icon' => '', 'Color' => -1],
-                ['Value' => 2, 'Name' => 'Play', 'Icon' => '', 'Color' => -1],
-                ['Value' => 3, 'Name' => 'Pause', 'Icon' => '', 'Color' => -1],
-                ['Value' => 4, 'Name' => 'Next', 'Icon' => '', 'Color' => -1]
-            ]
-        ]);
+        if (!IPS_VariableProfileExists('Roon.State')) {
+            IPS_CreateVariableProfile('Roon.State', 1);
+            IPS_SetVariableProfileAssociation('Roon.State', 0, 'Previous', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 1, 'Stop', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 2, 'Play', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 3, 'Pause', '', -1);
+            IPS_SetVariableProfileAssociation('Roon.State', 4, 'Next', '', -1);
+        }
+        IPS_SetVariableCustomProfile($this->GetIDForIdent('State'), 'Roon.State');
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), [
             'Presentation' => VARIABLE_PRESENTATION_SLIDER,
             'Min' => 0,
