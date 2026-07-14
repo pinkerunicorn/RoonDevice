@@ -17,7 +17,7 @@ class RoonZone extends IPSModuleStrict
         // Variablen registrieren
 
         
-        $this->RegisterVariableInteger('State', 'ℹ️ Status', '', 1);
+        $this->RegisterVariableInteger('State', 'ℹ Status', '', 1);
         $this->RegisterVariableString('Title', '🎵 Titel', '', 2);
         $this->RegisterVariableString('Artist', '🎤 Künstler', '', 3);
         $this->RegisterVariableString('Album', '💿 Album', '', 4);
@@ -45,7 +45,7 @@ class RoonZone extends IPSModuleStrict
         $topicZone = $this->GetMqttZoneName($zone);
 
         // Filter setzen: Da json_encode oft Slashes als \/ escaped, nehmen wir einen toleranteren Filter
-        $this->SetReceiveDataFilter('.*' . $topicZone . '.*');
+        $this->SetReceiveDataFilter('.*'. $topicZone . '.*');
 
         
         if (!IPS_VariableProfileExists('Roon.State')) {
@@ -58,11 +58,11 @@ class RoonZone extends IPSModuleStrict
         }
         IPS_SetVariableCustomProfile($this->GetIDForIdent('State'), 'Roon.State');
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('Volume'), [
-            'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
-            'MIN' => 0,
-            'MAX' => 100,
-            'STEP' => 1,
-            'SUFFIX' => ' %'
+            'PRESENTATION'=> VARIABLE_PRESENTATION_SLIDER,
+            'MIN'=> 0,
+            'MAX'=> 100,
+            'STEP'=> 1,
+            'SUFFIX'=> '%'
         ]);
     }
 
@@ -77,24 +77,24 @@ class RoonZone extends IPSModuleStrict
         $payloadRaw = is_scalar($data['Payload']) ? (string) $data['Payload'] : '';
         $payload = (ctype_xdigit($payloadRaw) || empty($payloadRaw)) ? hex2bin($payloadRaw) : $payloadRaw;
 
-        // IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: ' . 'Received Topic: ' . $topic . ' | Payload: ' . $payload);
+        // IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: '. 'Received Topic: '. $topic . '| Payload: '. $payload);
 
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
 
         // Titel
-        if ($topic === 'roon/' . $topicZone . '/now_playing/three_line/line1') {
+        if ($topic === 'roon/'. $topicZone . '/now_playing/three_line/line1') {
             $this->SetValue('Title', $payload);
         }
         // Künstler
-        elseif ($topic === 'roon/' . $topicZone . '/now_playing/three_line/line2') {
+        elseif ($topic === 'roon/'. $topicZone . '/now_playing/three_line/line2') {
             $this->SetValue('Artist', $payload);
         }
         // Album
-        elseif ($topic === 'roon/' . $topicZone . '/now_playing/three_line/line3') {
+        elseif ($topic === 'roon/'. $topicZone . '/now_playing/three_line/line3') {
             $this->SetValue('Album', $payload);
         }
         // Status
-        elseif ($topic === 'roon/' . $topicZone . '/state') {
+        elseif ($topic === 'roon/'. $topicZone . '/state') {
             switch (strtolower($payload)) {
                 case 'stopped':
                     $this->SetValue('State', 1); // 1 = Stop
@@ -111,7 +111,7 @@ class RoonZone extends IPSModuleStrict
             }
         }
         // Lautstärke: roon/zonename/outputs/outputname/volume/value
-        if (preg_match('/^roon\/' . preg_quote($topicZone, '/') . '\/outputs\/(.+)\/volume\/value$/', $topic, $matches)) {
+        if (preg_match('/^roon\/'. preg_quote($topicZone, '/') . '\/outputs\/(.+)\/volume\/value$/', $topic, $matches)) {
             $outputName = $matches[1];
             // Speichere den Output-Namen für spätere Kommandos
             $this->SetBuffer('OutputName', $outputName);
@@ -157,7 +157,7 @@ class RoonZone extends IPSModuleStrict
     private function SendMQTTCommand(string $command, string $payload = ''): void
     {
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
-        $topic = 'roon/' . $topicZone . '/command';
+        $topic = 'roon/'. $topicZone . '/command';
 
         $this->PublishMqtt($topic, $command); // Usually command is the payload itself for simple actions
     }
@@ -165,7 +165,7 @@ class RoonZone extends IPSModuleStrict
     private function SendMQTTVolumeCommand(string $outputName, string $command, string $payload): void
     {
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
-        $topic = 'roon/' . $topicZone . '/outputs/' . $outputName . '/volume/' . $command;
+        $topic = 'roon/'. $topicZone . '/outputs/'. $outputName . '/volume/'. $command;
 
         $this->PublishMqtt($topic, (string)$payload);
     }
@@ -173,14 +173,14 @@ class RoonZone extends IPSModuleStrict
     public function SendCommand(string $command): void
     {
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
-        $topic = 'roon/' . $topicZone . '/command';
+        $topic = 'roon/'. $topicZone . '/command';
         $this->PublishMqtt($topic, $command);
     }
 
     public function SetVolume(int $volume): void
     {
         $topicZone = $this->GetMqttZoneName($this->ReadPropertyString('ZoneName'));
-        $topic = 'roon/' . $topicZone . '/volume/set';
+        $topic = 'roon/'. $topicZone . '/volume/set';
         $this->PublishMqtt($topic, (string)$volume);
     }
 
@@ -202,17 +202,17 @@ class RoonZone extends IPSModuleStrict
     private function PublishMqtt(string $topic, string $payload): void
     {
         if (!$this->HasActiveParent()) {
-            IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: ' . 'No active MQTT parent');
+            IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: '. 'No active MQTT parent');
             return;
         }
 
         $data = [
-            'DataID'  => '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}',
-            'PacketType' => 3,
-            'QualityOfService' => 0,
-            'Retain'  => false,
-            'Topic'   => $topic,
-            'Payload' => bin2hex($payload)
+            'DataID' => '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}',
+            'PacketType'=> 3,
+            'QualityOfService'=> 0,
+            'Retain' => false,
+            'Topic'  => $topic,
+            'Payload'=> bin2hex($payload)
         ];
 
         $this->SendDataToParent(json_encode($data));
@@ -226,7 +226,7 @@ class RoonZone extends IPSModuleStrict
 
     protected function LogMessage(string $Message, int $Type): bool
     {
-        IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: ' . $Message);
+        IPS_LogMessage('SmartVillaKunterbunt', 'RoonZone: '. $Message);
         return true;
     }
 
