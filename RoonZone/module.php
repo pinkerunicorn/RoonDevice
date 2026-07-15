@@ -18,10 +18,15 @@ class RoonZone extends IPSModuleStrict
 
         
         $this->RegisterVariableInteger('State', 'ℹ Status', '', 1);
+        IPS_SetIcon($this->GetIDForIdent('State'), 'Information');
         $this->RegisterVariableString('Title', '🎵 Titel', '', 2);
+        IPS_SetIcon($this->GetIDForIdent('Title'), 'Melody');
         $this->RegisterVariableString('Artist', '🎤 Künstler', '', 3);
+        IPS_SetIcon($this->GetIDForIdent('Artist'), 'User');
         $this->RegisterVariableString('Album', '💿 Album', '', 4);
+        IPS_SetIcon($this->GetIDForIdent('Album'), 'Database');
         $this->RegisterVariableInteger('Volume', '🔊 Lautstärke', '', 5);
+        IPS_SetIcon($this->GetIDForIdent('Volume'), 'Intensity');
 
         // Aktionen für die Bedienung freigeben
         $this->EnableAction('State');
