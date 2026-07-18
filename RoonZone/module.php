@@ -241,6 +241,10 @@ class RoonZone extends IPSModuleStrict
 {
     "elements": [
         {
+            "type": "Label",
+            "label": "Hier stellst du den Namen deiner Roon Zone ein. Bitte achte darauf, dass du die exakte Schreibweise verwendest, wie sie in deiner Roon-App konfiguriert ist."
+        },
+        {
             "type": "RowLayout",
             "items": [
                 {
