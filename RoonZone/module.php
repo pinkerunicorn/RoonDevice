@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 class RoonZone extends IPSModuleStrict
 {
+    private const TRANSPORT_COMMANDS = [
+        0 => 'previous',
+        1 => 'stop',
+        2 => 'play',
+        3 => 'pause',
+        4 => 'next',
+    ];
+
     public function Create(): void
     {
         // Diese Zeile nicht löschen.
@@ -125,11 +133,11 @@ class RoonZone extends IPSModuleStrict
     {
         switch ($Ident) {
             case 'State':
-                if ($Value == 0)     $this->SendCommand('previous');
-                elseif ($Value == 1) $this->SendCommand('stop');
-                elseif ($Value == 2) $this->SendCommand('play');
-                elseif ($Value == 3) $this->SendCommand('pause');
-                elseif ($Value == 4) $this->SendCommand('next');
+                if (isset(self::TRANSPORT_COMMANDS[$Value])) {
+                    $this->SendCommand(self::TRANSPORT_COMMANDS[$Value]);
+                } else {
+                    $this->SLog('ERROR', 'Unbekannte Transport-Aktion', 'Ident: ' . $Ident . ' | Wert: ' . $Value);
+                }
                 break;
             case 'Volume':
                 $outputName = $this->GetBuffer('OutputName');
